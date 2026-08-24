@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+
+      - name: Lint the OpenAPI description
+        run: npm run lint:spec
+
+      # The spec is the single source of truth for the SDK's types. If someone
+      # edits it without regenerating, this fails here rather than shipping a
+      # package whose types disagree with the contract.
+      - name: Types are in sync with the spec
+        run: |
+          npm run generate
+          git diff --exit-code -- src/generated \
+            || { echo "::error::src/generated is stale — run 'npm run generate' and commit the result"; exit 1; }
+
+      - run: npm run typecheck
+
+      - name: Type-check the examples
+        run: npm run typecheck:examples
+
+      - run: npm test
+      - run: npm run build
+
+      # A browser bundle must not pull in Node built-ins or the optional peers.
+      - name: Core entry stays dependency-free
+        run: |
+          node -e "
+            const source = require('node:fs').readFileSync('dist/index.js', 'utf8');
+            const forbidden = ['@solana/web3.js', 'centrifuge', 'node:fs'];
+            const leaked = forbidden.filter((name) => source.includes(name));
+            if (leaked.length) {
+              console.error('core bundle must not import: ' + leaked.join(', '));
+              process.exit(1);
+            }
+            console.log('core bundle is clean');
+          "
+
+      # Catches a missing file in "files" before a consumer does.
+      - name: Package contains the spec and the licence
+        run: |
+          npm pack --dry-run --json > /tmp/pack.json
+          node -e "
+            const [pkg] = require('/tmp/pack.json');
+            const names = pkg.files.map((file) => file.path);
+            const required = ['LICENSE', 'README.md', 'spec/openapi.yaml', 'dist/index.js', 'dist/index.d.ts'];
+            const missing = required.filter((name) => !names.includes(name));
+            if (missing.length) {
+              console.error('tarball is missing: ' + missing.join(', '));
+              process.exit(1);
+            }
+            console.log('tarball contains ' + names.length + ' files');
+          "

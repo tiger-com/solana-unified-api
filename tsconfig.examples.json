@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@tigercom/perp-sdk": ["./src/index.ts"],
+      "@tigercom/perp-sdk/node": ["./src/node.ts"],
+      "@tigercom/perp-sdk/browser": ["./src/browser.ts"],
+      "@tigercom/perp-sdk/solana": ["./src/solana.ts"],
+      "@tigercom/perp-sdk/realtime": ["./src/realtime.ts"]
+    },
+    "allowImportingTsExtensions": true
+  },
+  "include": ["examples/**/*.ts"],
+  "exclude": ["examples/browser.tsx"]
+}
