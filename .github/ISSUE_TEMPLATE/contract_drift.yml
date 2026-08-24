@@ -1,0 +1,27 @@
+name: Contract drift
+description: The deployed API does something the OpenAPI description does not say.
+labels: [contract-drift]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when the live API and `spec/openapi.yaml` disagree — an undocumented field,
+        a route that exists but is not described, a status code or error code that is not
+        listed. These are the reports that keep the reference honest.
+  - type: input
+    id: route
+    attributes:
+      label: Route
+      placeholder: GET /v1/perp/venues/{venue}/markets/{market_id}/orderbook
+    validations: { required: true }
+  - type: textarea
+    id: observed
+    attributes:
+      label: What the deployment actually returns
+      description: Status, headers if relevant, and the body with anything private redacted.
+      render: json
+    validations: { required: true }
+  - type: textarea
+    id: documented
+    attributes:
+      label: What the description says

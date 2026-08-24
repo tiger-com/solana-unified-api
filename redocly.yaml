@@ -1,0 +1,10 @@
+# Lint config for spec/openapi.yaml — `npx @redocly/cli lint spec/openapi.yaml`
+extends:
+  - recommended
+rules:
+  # Venue discovery and JWKS produce no route-specific client errors; documenting a
+  # speculative 4xx would be worse than the warning.
+  operation-4xx-response: off
+  # ExecutionEvent and PositionEvent are WebSocket payloads with no HTTP operation.
+  # The docs generator renders them through the <!--SCHEMA:Name:Title--> directive.
+  no-unused-components: off

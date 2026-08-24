@@ -1,0 +1,25 @@
+# Internal contract documentation — the source material this public package was
+# derived from. It describes the service HMAC protocol, internal routes, Kafka
+# topics, and internal hostnames, none of which belong in a public repository.
+internal_docs/
+
+# The API reference generator. The rendered page is published separately, so the
+# generator stays a local tool rather than part of the package.
+docs/
+
+spec/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Local agent/editor tooling
+.claude/
+
+# Editor and OS noise
+.DS_Store
+*.swp
+.idea/
+.vscode/

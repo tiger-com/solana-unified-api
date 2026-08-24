@@ -1,0 +1,103 @@
+{
+  "name": "@tigertrade/perp-sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for the Tiger Solana unified perpetuals API",
+  "keywords": [
+    "solana",
+    "perpetuals",
+    "perps",
+    "perpetual-futures",
+    "dex",
+    "trading",
+    "phoenix",
+    "tiger",
+    "sdk",
+    "typescript"
+  ],
+  "license": "MIT",
+  "author": "Tiger",
+  "homepage": "https://github.com/tiger-com/solana-unified-api#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tiger-com/solana-unified-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tiger-com/solana-unified-api/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist",
+    "spec",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.js",
+      "require": "./dist/browser.cjs"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.js",
+      "require": "./dist/node.cjs"
+    },
+    "./solana": {
+      "types": "./dist/solana.d.ts",
+      "import": "./dist/solana.js",
+      "require": "./dist/solana.cjs"
+    },
+    "./realtime": {
+      "types": "./dist/realtime.d.ts",
+      "import": "./dist/realtime.js",
+      "require": "./dist/realtime.cjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "generate": "openapi-typescript spec/openapi.yaml -o src/generated/openapi.ts",
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run generate && npm run lint:spec && npm run typecheck && npm run typecheck:examples && npm run test && npm run build",
+    "typecheck:examples": "tsc -p tsconfig.examples.json --noEmit",
+    "lint:spec": "redocly lint spec/openapi.yaml"
+  },
+  "dependencies": {
+    "bs58": "^6.0.0",
+    "centrifuge": "^5.2.2"
+  },
+  "peerDependencies": {
+    "@solana/web3.js": "^1.95.0"
+  },
+  "peerDependenciesMeta": {
+    "@solana/web3.js": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@redocly/cli": "^2.47.0",
+    "@solana/web3.js": "^1.98.4",
+    "openapi-typescript": "^7.5.0",
+    "tsup": "^8.3.5",
+    "tweetnacl": "^1.0.3",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,49 @@
+name: Bug report
+description: Something in the SDK or the reference behaves differently from what it documents.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Never include a private key, a keypair file, an access token, or a signed
+        transaction.** If a report needs one to make sense, redact it — a token pasted into
+        a public issue cannot be revoked, because this API has no revocation.
+
+        Suspected security problem? Do not open an issue. See
+        [SECURITY.md](../blob/main/SECURITY.md).
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - SDK (@tigertrade/perp-sdk)
+        - OpenAPI description
+        - Examples
+    validations: { required: true }
+  - type: input
+    id: version
+    attributes:
+      label: SDK version
+      placeholder: 0.1.0
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations: { required: true }
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead
+      description: Include the `error.code`, not just the message — the code is the stable contract.
+    validations: { required: true }
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: The smallest snippet that shows it. Redact keys, tokens, and account addresses you would rather not publish.
+      render: ts
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: node 20.11 / Chrome 128 / development
