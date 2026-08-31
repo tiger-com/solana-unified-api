@@ -92,12 +92,12 @@
     }
   },
   "devDependencies": {
-    "@redocly/cli": "^2.47.0",
+    "@redocly/cli": "^2.49.0",
     "@solana/web3.js": "^1.98.4",
     "openapi-typescript": "^7.5.0",
     "tsup": "^8.3.5",
     "tweetnacl": "^1.0.3",
-    "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
   }
 }
